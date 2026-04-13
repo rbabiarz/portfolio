@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/rbabiarz/Claude/portfolio status)",
+      "Bash(git init:*)",
+      "Bash(gh repo:*)",
+      "Bash(gh auth:*)",
+      "mcp__figma__get_metadata",
+      "mcp__figma__get_design_context",
+      "Bash(python3 -c \" import sys, json data = json.load\\(sys.stdin\\) for item in data: if item['type'] == 'text': print\\(item['text']\\) elif item['type'] == 'image_url': print\\('[IMAGE]', item.get\\('url',''\\)\\) \")",
+      "mcp__figma__get_screenshot",
+      "Bash(python3)",
+      "Bash(npm create:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)"
+    ]
+  }
+}
