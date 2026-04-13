@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const skills = [
   'UX / Product Design', 'Design Systems', 'Interaction Design', 'IoT',
@@ -8,26 +7,23 @@ const skills = [
   'User Research', 'Prototyping', 'Design Tokens', 'Touchscreen Concepts',
 ]
 
-const companies = [
-  { name: 'Signify / Cooper Lighting', years: '2019 – Present' },
-  { name: 'Parlay Gaming', years: '2017 – 2019' },
-  { name: 'Adobe', years: 'Contract' },
-  { name: 'Various Agencies', years: '2008 – 2017' },
-]
-
-function Pill({ text, delay }) {
+function M3Chip({ text, delay }) {
   return (
     <motion.span
-      initial={{ opacity: 0, scale: 0.85, y: 10 }}
+      className="m3-chip m3-state-layer"
+      initial={{ opacity: 0, scale: 0.88, y: 8 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ scale: 1.06, borderColor: 'rgba(108,99,255,0.5)' }}
-      className="inline-flex items-center justify-center px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-[0.05em] text-[#8b8fa8] cursor-default"
+      transition={{ duration: 0.38, delay, ease: [0.2, 0, 0, 1] }}
+      whileHover={{ borderColor: 'var(--md-sys-color-primary)', color: 'var(--md-sys-color-primary)' }}
       style={{
-        background: '#1b1d2c',
-        border: '1px solid rgba(108,99,255,0.18)',
-        fontFamily: 'Montserrat, sans-serif',
+        background: 'var(--md-brand-pill-bg)',
+        border: '1px solid var(--md-brand-pill-border)',
+        color: 'var(--md-sys-color-on-surface-dark)',
+        cursor: 'default',
+        transition: 'border-color 0.2s, color 0.2s',
+        textTransform: 'uppercase',
+        letterSpacing: '0.07em',
       }}
     >
       {text}
@@ -36,49 +32,51 @@ function Pill({ text, delay }) {
 }
 
 export default function About() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-
   return (
-    <section id="about" className="relative py-0 overflow-hidden">
-      {/* Dark overlay block flush with hero bottom */}
+    <section id="about" style={{ position: 'relative', overflow: 'hidden' }}>
       <motion.div
-        ref={ref}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="relative"
-        style={{ background: 'rgba(0,0,0,0.82)', borderRadius: '0 60px 0 0' }}
+        transition={{ duration: 0.55 }}
+        style={{
+          background: 'rgba(0,0,0,0.82)',
+          borderRadius: '0 var(--md-sys-shape-extra-large) 0 0',
+        }}
       >
-        <div className="max-w-[1280px] mx-auto px-12 py-20">
-          <div className="max-w-[860px]">
-            {/* Eyebrow */}
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: 'var(--md-spacing-20) var(--md-spacing-12)' }}>
+          <div style={{ maxWidth: 860 }}>
+
+            {/* Eyebrow — M3 Label Large */}
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              className="m3-label-large"
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-[11px] font-bold tracking-[0.18em] uppercase mb-6"
-              style={{ color: '#8b8fa8', fontFamily: 'Montserrat, sans-serif' }}
+              style={{ color: 'var(--md-sys-color-on-surface-variant)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 'var(--md-spacing-6)' }}
             >
               About Me
             </motion.p>
 
-            {/* Heading */}
+            {/* Heading — M3 Display Small */}
             <motion.h2
-              initial={{ opacity: 0, y: 30 }}
+              className="m3-display-small"
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[40px] font-bold leading-[1.15] tracking-[-0.02em] mb-8"
-              style={{ color: '#e8eaf6', fontFamily: 'Montserrat, sans-serif' }}
+              transition={{ duration: 0.65, delay: 0.1, ease: [0.2, 0, 0, 1] }}
+              style={{
+                color: 'var(--md-sys-color-on-surface-dark)',
+                fontWeight: 400,
+                marginBottom: 'var(--md-spacing-8)',
+                lineHeight: 1.2,
+              }}
             >
               A genuine obsession with the moment when a complicated system suddenly feels effortless to use
             </motion.h2>
 
-            {/* Body */}
-            <div className="space-y-5">
+            {/* Body — M3 Body Large */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--md-spacing-5)' }}>
               {[
                 `I turn complex technology into experiences people actually enjoy using. Across IoT-connected lighting, augmented reality, enterprise SaaS, and iGaming, my focus has always been the same: the moment a complicated system suddenly feels effortless.`,
                 `I led UX across a full suite of mobile-first commercial software — iOS, Android, responsive web, and desktop — and founded an enterprise-wide design system in Figma adopted across the entire product suite. I've taken products from zero to production, contributed 3 issued patents with 1 pending, and partnered closely with product and engineering in Agile environments to ship cohesive, accessible outcomes.`,
@@ -86,23 +84,21 @@ export default function About() {
               ].map((text, i) => (
                 <motion.p
                   key={i}
-                  initial={{ opacity: 0, y: 16 }}
+                  className="m3-body-large"
+                  initial={{ opacity: 0, y: 14 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.55, delay: 0.2 + i * 0.1 }}
-                  className="text-[16px] font-medium leading-[1.75]"
-                  style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}
+                  transition={{ duration: 0.5, delay: 0.18 + i * 0.1 }}
+                  style={{ color: 'white', lineHeight: 1.75 }}
                 >
                   {text}
                 </motion.p>
               ))}
             </div>
 
-            {/* Skills pills */}
-            <div className="flex flex-wrap gap-2.5 mt-10">
-              {skills.map((s, i) => (
-                <Pill key={s} text={s} delay={0.04 * i} />
-              ))}
+            {/* Skills — M3 Chips */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--md-spacing-2)', marginTop: 'var(--md-spacing-10)' }}>
+              {skills.map((s, i) => <M3Chip key={s} text={s} delay={0.04 * i} />)}
             </div>
           </div>
         </div>

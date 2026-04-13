@@ -1,32 +1,33 @@
-import { useRef, useEffect, useState } from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const ROB_PHOTO = 'https://www.figma.com/api/mcp/asset/47ee7f15-54bc-4458-967e-acb43776d4c4'
 
 const stats = [
-  { value: '50+', label: 'Products' },
-  { value: '+34%', label: '2025 Sales' },
-  { value: '3+1', label: 'Patents' },
+  { value: '50+', label: 'Products shipped' },
+  { value: '+34%', label: '2025 sales lift' },
+  { value: '3+1', label: 'Patents filed' },
 ]
 
-function AnimatedStat({ value, label, delay }) {
+function StatCard({ value, label, delay }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col gap-2"
+      transition={{ duration: 0.5, delay, ease: [0.2, 0, 0, 1] }}
+      style={{ display: 'flex', flexDirection: 'column', gap: 'var(--md-spacing-1)' }}
     >
-      <div className="w-full h-[1px] bg-gradient-to-r from-[#8144ab] to-transparent mb-1" />
+      <div style={{ width: '100%', height: 1, background: 'linear-gradient(90deg, var(--md-brand-accent), transparent)', marginBottom: 4 }} />
       <span
-        className="text-[28px] font-black tracking-tight"
-        style={{ color: '#8144ab', fontFamily: 'Montserrat, sans-serif' }}
+        className="m3-headline-medium"
+        style={{ color: 'var(--md-sys-color-secondary)', fontWeight: 700 }}
       >
         {value}
       </span>
       <span
-        className="text-[15px] font-medium text-[#1c1b1f]"
-        style={{ fontFamily: 'Montserrat, sans-serif' }}
+        className="m3-body-medium"
+        style={{ color: 'var(--md-sys-color-on-surface)' }}
       >
         {label}
       </span>
@@ -37,97 +38,102 @@ function AnimatedStat({ value, label, delay }) {
 export default function Hero() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const photoY = useTransform(scrollYProgress, [0, 1], [0, 160])
-  const photoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -60])
+  const photoY = useTransform(scrollYProgress, [0, 1], [0, 140])
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -50])
 
   return (
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-screen overflow-hidden bg-[#eeeeee] pt-24"
+      style={{
+        position: 'relative',
+        minHeight: '100svh',
+        overflow: 'hidden',
+        background: 'var(--md-sys-color-surface)',
+        paddingTop: 64,
+      }}
     >
-      {/* Background gradient blobs */}
-      <div
-        className="absolute top-0 right-0 w-[800px] h-[800px] pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at 80% 20%, rgba(99,52,132,0.12) 0%, transparent 65%)',
-        }}
-      />
-      <div
-        className="absolute bottom-0 left-0 w-[500px] h-[500px] pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at 20% 80%, rgba(129,68,171,0.08) 0%, transparent 65%)',
-        }}
-      />
+      {/* M3 tonal surface tint blob */}
+      <div style={{
+        position: 'absolute', top: 0, right: 0,
+        width: 720, height: 720, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse at 75% 15%, color-mix(in srgb, var(--md-sys-color-primary) 14%, transparent) 0%, transparent 65%)',
+      }} />
 
-      <div className="max-w-[1280px] mx-auto px-12 relative">
-        <div className="grid grid-cols-2 gap-8 items-start pt-12 min-h-[calc(100vh-96px)]">
-          {/* Left — text */}
-          <motion.div
-            style={{ y: textY }}
-            className="flex flex-col gap-8 pt-6 z-10"
-          >
-            {/* Eyebrow */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 var(--md-spacing-12)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--md-spacing-8)', alignItems: 'flex-start', paddingTop: 'var(--md-spacing-12)', minHeight: 'calc(100svh - 64px)' }}>
+
+          {/* ── Left: Text ── */}
+          <motion.div style={{ y: textY, display: 'flex', flexDirection: 'column', gap: 'var(--md-spacing-8)', paddingTop: 'var(--md-spacing-6)', zIndex: 10 }}>
+            {/* Eyebrow — M3 Label Large */}
             <motion.p
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-[11px] font-bold tracking-[0.2em] text-[#8b8fa8] uppercase"
+              transition={{ duration: 0.45, delay: 0.1 }}
+              className="m3-label-large"
+              style={{ color: 'var(--md-sys-color-on-surface-variant)', textTransform: 'uppercase', letterSpacing: '0.15em' }}
             >
               Experience Design Leader
             </motion.p>
 
-            {/* Headline */}
-            <div className="overflow-hidden">
+            {/* Headline — M3 Display Large */}
+            <div style={{ overflow: 'hidden' }}>
               {['I Make Complex', 'Systems Feel', 'Effortless'].map((line, i) => (
-                <motion.h1
+                <motion.div
                   key={line}
-                  initial={{ y: 90, opacity: 0 }}
+                  initial={{ y: 80, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.75, delay: 0.15 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[64px] font-black leading-[1.05] tracking-[-0.03em] text-[#1c1b1f] block"
-                  style={{ fontFamily: 'Montserrat, sans-serif' }}
+                  transition={{ duration: 0.7, delay: 0.15 + i * 0.1, ease: [0.2, 0, 0, 1] }}
                 >
-                  {line}
-                </motion.h1>
+                  <h1
+                    className="m3-display-large"
+                    style={{
+                      color: 'var(--md-sys-color-on-surface)',
+                      fontWeight: 700,
+                      fontSize: 'clamp(42px, 5vw, 57px)',
+                      lineHeight: 1.05,
+                      letterSpacing: '-0.3px',
+                    }}
+                  >
+                    {line}
+                  </h1>
+                </motion.div>
               ))}
             </div>
 
-            {/* Tagline */}
+            {/* Body — M3 Body Large */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[16px] font-medium leading-[1.8] text-[#1c1b1f] max-w-[480px]"
-              style={{ fontFamily: 'Montserrat, sans-serif' }}
+              transition={{ duration: 0.55, delay: 0.5 }}
+              className="m3-body-large"
+              style={{ color: 'var(--md-sys-color-on-surface-variant)', maxWidth: 480, lineHeight: 1.75 }}
             >
-              I am a <strong>Experience Designer</strong>, crafting intuitive digital products and problem solving across{' '}
-              <strong>IoT</strong>, <strong>Enterprise SaaS</strong>, <strong>B2B/B2C, AR,</strong> and{' '}
-              <strong>iGaming</strong> domains.
+              I am a <strong style={{ color: 'var(--md-sys-color-on-surface)', fontWeight: 500 }}>Experience Designer</strong>, crafting intuitive digital products across{' '}
+              <strong style={{ color: 'var(--md-sys-color-on-surface)', fontWeight: 500 }}>IoT</strong>,{' '}
+              <strong style={{ color: 'var(--md-sys-color-on-surface)', fontWeight: 500 }}>Enterprise SaaS</strong>,{' '}
+              <strong style={{ color: 'var(--md-sys-color-on-surface)', fontWeight: 500 }}>B2B/B2C, AR,</strong> and{' '}
+              <strong style={{ color: 'var(--md-sys-color-on-surface)', fontWeight: 500 }}>iGaming</strong> domains.
             </motion.p>
 
             {/* Stats */}
-            <div className="flex gap-10">
-              {stats.map((s, i) => (
-                <AnimatedStat key={s.label} {...s} delay={0.6 + i * 0.1} />
-              ))}
+            <div style={{ display: 'flex', gap: 'var(--md-spacing-10)' }}>
+              {stats.map((s, i) => <StatCard key={s.label} {...s} delay={0.6 + i * 0.1} />)}
             </div>
 
-            {/* CTAs */}
+            {/* CTAs — M3 Filled + Outlined buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-              className="flex gap-5 items-center flex-wrap"
+              transition={{ duration: 0.5, delay: 0.9 }}
+              style={{ display: 'flex', gap: 'var(--md-spacing-3)', flexWrap: 'wrap', alignItems: 'center' }}
             >
               <motion.a
                 href="https://www.linkedin.com/in/robert-babiarz/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-7 py-4 rounded-full text-white font-bold text-[15px] tracking-[0.04em] uppercase no-underline"
-                style={{ background: '#633484', border: '1px solid #8144ab', fontFamily: 'Montserrat, sans-serif' }}
-                whileHover={{ scale: 1.04, boxShadow: '0 8px 32px rgba(99,52,132,0.45)' }}
+                className="m3-btn-filled m3-state-layer"
+                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
               >
@@ -137,52 +143,52 @@ export default function Hero() {
                 href="https://www.dropbox.com/scl/fi/cbmlzto69jvxolxa52rfz/Robert-Babiarz_2026_ATS_Resume.pdf?rlkey=ir1w22ybtma6qsfibhl67ydxq&st=bkuc3s0q&dl=0"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-7 py-4 rounded-full font-bold text-[15px] tracking-[0.04em] uppercase no-underline text-[#1c1b1f]"
-                style={{ background: 'white', border: '1px solid #e4e4e4', fontFamily: 'Montserrat, sans-serif' }}
-                whileHover={{ scale: 1.04, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
+                className="m3-btn-outlined m3-state-layer"
+                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
               >
                 Download Resume →
               </motion.a>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
+                <Link to="/work" className="m3-btn-tonal m3-state-layer">
+                  View Work →
+                </Link>
+              </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Right — photo */}
+          {/* ── Right: Photo ── */}
           <motion.div
-            className="relative h-[90vh] overflow-hidden"
-            initial={{ opacity: 0, scale: 0.96 }}
+            style={{ position: 'relative', height: '90vh', overflow: 'hidden', borderRadius: 'var(--md-sys-shape-extra-large) var(--md-sys-shape-extra-large) 0 0' }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.2, 0, 0, 1] }}
           >
             <motion.img
               src={ROB_PHOTO}
               alt="Robert Babiarz — Experience Design Leader"
-              className="absolute inset-0 w-full h-full object-cover object-top"
-              style={{ y: photoY, scale: photoScale }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', y: photoY }}
             />
-            {/* Gradient fade at bottom */}
-            <div
-              className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, #eeeeee 0%, transparent 100%)' }}
-            />
+            <div style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0, height: 160,
+              background: 'linear-gradient(to top, var(--md-sys-color-surface), transparent)',
+              pointerEvents: 'none',
+            }} />
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll cue */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
+        style={{ position: 'absolute', bottom: 24, left: '50%', x: '-50%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
       >
-        <span className="text-[10px] font-bold tracking-[0.2em] text-[#8b8fa8] uppercase">Scroll</span>
+        <span className="m3-label-small" style={{ color: 'var(--md-sys-color-on-surface-variant)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Scroll</span>
         <motion.div
-          className="w-[1px] h-10 bg-gradient-to-b from-[#8144ab] to-transparent"
+          style={{ width: 1, height: 36, background: 'linear-gradient(to bottom, var(--md-sys-color-primary), transparent)', originY: 0 }}
           animate={{ scaleY: [1, 0.3, 1], opacity: [1, 0.4, 1] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ originY: 0 }}
         />
       </motion.div>
     </section>

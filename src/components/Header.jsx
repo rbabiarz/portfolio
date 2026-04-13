@@ -1,80 +1,111 @@
 import { useEffect, useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 
 const navItems = [
-  { label: 'HOME/BIO', href: '#hero', icon: '⌂' },
-  { label: 'WORK', href: '#projects', icon: '◈' },
-  { label: 'PATENTS', href: '#about', icon: '◉' },
+  { label: 'Home / Bio', path: '/' },
+  { label: 'Work', path: '/work' },
+  { label: 'Patents', path: '/patents' },
 ]
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState('HOME/BIO')
   const { scrollY } = useScroll()
+  const location = useLocation()
 
-  useMotionValueEvent(scrollY, 'change', (y) => {
-    setScrolled(y > 20)
-  })
+  useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 10))
 
   return (
     <motion.header
-      initial={{ y: -80, opacity: 0 }}
+      initial={{ y: -72, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-5 transition-all duration-300"
+      transition={{ duration: 0.55, ease: [0.2, 0, 0, 1] }}
+      className="fixed top-0 left-0 right-0 z-50 m3-nav-bar"
       style={{
         background: scrolled
-          ? 'rgba(255,255,255,0.92)'
-          : 'rgba(255,255,255,0.85)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: scrolled ? '1px solid #e0e0e0' : '1px solid transparent',
-        boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.08)' : 'none',
+          ? 'rgba(243,237,247,0.96)'
+          : 'rgba(255,251,254,0.90)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderBottom: `1px solid ${scrolled ? 'var(--md-sys-color-outline-variant)' : 'transparent'}`,
+        boxShadow: scrolled ? 'var(--md-sys-elevation-2)' : 'none',
+        transition: 'background 0.3s, box-shadow 0.3s, border-color 0.3s',
+        height: 64,
+        padding: '0 48px',
       }}
     >
-      {/* Logo */}
-      <motion.a
-        href="#hero"
-        className="flex flex-col leading-none no-underline"
-        whileHover={{ scale: 1.02 }}
-        transition={{ type: 'spring', stiffness: 400 }}
-      >
-        <span
-          className="text-[22px] font-black tracking-[-0.06em] text-[#1c1b1f]"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
-        >
-          ROBERT BABIARZ
-        </span>
-        <span
-          className="text-[11px] font-semibold tracking-[0.15em] text-[#8b8fa8] uppercase"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
-        >
-          Experience Design Leader
-        </span>
-      </motion.a>
-
-      {/* Nav */}
-      <nav className="flex items-center gap-8">
-        {navItems.map((item) => (
-          <motion.a
-            key={item.label}
-            href={item.href}
-            className="flex flex-col items-center gap-1 no-underline group"
-            whileHover={{ y: -2 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            onClick={() => setActive(item.label)}
+      {/* Logo / Wordmark */}
+      <NavLink to="/" style={{ display: 'flex', flexDirection: 'column', gap: 1, textDecoration: 'none' }}>
+        <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 400 }}>
+          <div
+            className="m3-title-large"
+            style={{ color: 'var(--md-sys-color-on-surface)', fontWeight: 700, letterSpacing: '-0.3px' }}
           >
-            <span className="text-[11px] font-bold tracking-[0.12em] text-[#1c1b1f] group-hover:text-[#633484] transition-colors duration-200">
-              {item.label}
-            </span>
-            <motion.div
-              className="h-[2px] rounded-full bg-[#633484]"
-              animate={{ width: active === item.label ? '100%' : '0%' }}
-              transition={{ duration: 0.3 }}
-              style={{ originX: 0 }}
-            />
-          </motion.a>
-        ))}
+            ROBERT BABIARZ
+          </div>
+          <div
+            className="m3-label-medium"
+            style={{ color: 'var(--md-sys-color-on-surface-variant)', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+          >
+            Experience Design Leader
+          </div>
+        </motion.div>
+      </NavLink>
+
+      {/* Spacer */}
+      <div style={{ flex: 1 }} />
+
+      {/* Navigation destinations (M3 Nav Bar pattern) */}
+      <nav style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path
+          return (
+            <NavLink key={item.path} to={item.path} style={{ textDecoration: 'none' }}>
+              <motion.div
+                className="m3-state-layer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 4,
+                  padding: '8px 20px',
+                  borderRadius: 'var(--md-sys-shape-full)',
+                  background: isActive
+                    ? 'var(--md-sys-color-secondary-container)'
+                    : 'transparent',
+                  color: isActive
+                    ? 'var(--md-sys-color-on-secondary-container)'
+                    : 'var(--md-sys-color-on-surface-variant)',
+                  transition: 'background 0.2s, color 0.2s',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                }}
+              >
+                <span
+                  className="m3-label-large"
+                  style={{ fontWeight: isActive ? 700 : 500 }}
+                >
+                  {item.label}
+                </span>
+                {/* M3 active indicator dot */}
+                <motion.div
+                  animate={{ width: isActive ? 32 : 0, opacity: isActive ? 1 : 0 }}
+                  transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
+                  style={{
+                    height: 3,
+                    borderRadius: 2,
+                    background: 'var(--md-sys-color-primary)',
+                    position: 'absolute',
+                    bottom: 0,
+                  }}
+                />
+              </motion.div>
+            </NavLink>
+          )
+        })}
       </nav>
     </motion.header>
   )

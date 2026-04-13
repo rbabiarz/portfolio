@@ -10,12 +10,12 @@ const ASSETS = {
   lobby:    'https://www.figma.com/api/mcp/asset/830873ed-180c-485e-99df-ba39c6504bcb',
 }
 
-const projects = [
+export const projects = [
   {
     id: 'dali',
     category: 'Enterprise · IoT',
     title: 'DALI-2 Lighting System',
-    description: 'First DALI-2 lighting control system of this scale in North America, designed for NEW Mississauga Hospital. Full end-to-end UX across commissioning, control zones, and fault diagnostics for a mission-critical healthcare facility.',
+    description: 'First DALI-2 lighting control system of this scale in North America, designed for the new Mississauga Hospital. Full end-to-end UX across commissioning, control zones, and fault diagnostics for a mission-critical healthcare facility.',
     tags: ['DALI-2', 'Healthcare', 'Enterprise IoT', 'First in NA'],
     image: ASSETS.dali,
     gradient: 'linear-gradient(151deg, rgb(49,46,129) 0%, rgb(76,29,149) 100%)',
@@ -45,7 +45,7 @@ const projects = [
     id: 'insights',
     category: 'Enterprise · SaaS',
     title: 'Core Insights',
-    description: 'Scalable multi-site dashboards for facility managers, turning IoT sensor data into actionable intelligence around energy ownership, space utilization, and predictive maintenance across large commercial building portfolios.',
+    description: 'Scalable multi-site dashboards for facility managers, turning IoT sensor data into actionable intelligence around energy ownership, space utilization, and predictive maintenance.',
     tags: ['Dashboard', 'Data Viz', 'Enterprise', 'Multi-site'],
     image: ASSETS.insights,
     gradient: 'linear-gradient(151deg, rgb(6,78,59) 0%, rgb(5,46,22) 100%)',
@@ -55,7 +55,7 @@ const projects = [
     id: 'ai',
     category: 'AI · Enterprise',
     title: 'Application of AI',
-    description: 'Infusing AI-powered intelligence into existing enterprise lighting applications — diagnostics, predictive maintenance, spatial intelligence, and smart fixture recommendations that surface insights without disrupting workflows.',
+    description: 'Infusing AI-powered intelligence into enterprise lighting — diagnostics, predictive maintenance, spatial intelligence, and smart fixture recommendations that surface insights without disrupting workflows.',
     tags: ['AI', 'Predictive', 'Enterprise', 'Spatial'],
     image: ASSETS.ai,
     gradient: 'linear-gradient(151deg, rgb(49,10,80) 0%, rgb(99,52,132) 100%)',
@@ -75,95 +75,93 @@ const projects = [
 
 function ProjectCard({ project, index }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-60px' })
+  const isInView = useInView(ref, { once: true, margin: '-48px' })
 
   return (
     <motion.article
       ref={ref}
-      initial={{ opacity: 0, y: 48 }}
+      className="m3-card-dark"
+      initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay: (index % 3) * 0.12, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6, boxShadow: '0 24px 60px rgba(99,52,132,0.25)' }}
-      className="flex flex-col overflow-hidden rounded-[2px]"
-      style={{
-        background: '#1b1d2c',
-        border: '1px solid rgba(108,99,255,0.18)',
-      }}
+      transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: [0.2, 0, 0, 1] }}
+      whileHover={{ y: -6, boxShadow: '0 16px 48px rgba(99,52,132,0.28)' }}
+      style={{ display: 'flex', flexDirection: 'column', borderRadius: 'var(--md-sys-shape-large)' }}
     >
-      {/* Image */}
-      <div
-        className="relative h-[200px] overflow-hidden"
-        style={{ background: project.gradient }}
-      >
+      {/* Image — M3 card media area */}
+      <div style={{ position: 'relative', height: 200, overflow: 'hidden', background: project.gradient, borderRadius: 'var(--md-sys-shape-large) var(--md-sys-shape-large) 0 0' }}>
         <motion.img
           src={project.image}
           alt={project.title}
-          className="absolute inset-0 w-full h-full object-cover"
-          whileHover={{ scale: 1.06 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        />
-        {/* Shine sweep on hover */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          initial={{ x: '-100%', opacity: 0 }}
-          whileHover={{ x: '200%', opacity: 0.15 }}
-          transition={{ duration: 0.7 }}
-          style={{
-            background: 'linear-gradient(90deg, transparent, white, transparent)',
-            width: '60%',
-          }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.45, ease: [0.2, 0, 0, 1] }}
         />
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col gap-4 p-6 flex-1">
-        {/* Category + lock */}
-        <div className="flex items-center gap-3">
+      {/* Content — M3 card body padding: 16dp */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--md-spacing-4)', padding: 'var(--md-spacing-6)', flex: 1 }}>
+
+        {/* Category chip + lock */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--md-spacing-3)' }}>
           <span
-            className="px-4 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-[0.08em] text-[#8b8fa8]"
-            style={{ background: 'rgba(108,99,255,0.15)', border: '1px solid rgba(108,99,255,0.18)' }}
+            className="m3-label-medium"
+            style={{
+              padding: '4px 12px',
+              borderRadius: 'var(--md-sys-shape-full)',
+              background: 'var(--md-brand-pill-bg)',
+              border: '1px solid var(--md-brand-pill-border)',
+              color: 'var(--md-sys-color-on-surface-variant)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+            }}
           >
             {project.category}
           </span>
-          {project.locked && (
-            <span className="text-[#8b8fa8] text-[18px]" title="NDA Protected">🔒</span>
-          )}
+          {project.locked && <span style={{ fontSize: 18, opacity: 0.6 }} title="NDA Protected">🔒</span>}
         </div>
 
-        {/* Title */}
+        {/* Title — M3 Title Large */}
         <h3
-          className="text-[18px] font-bold text-[#e8eaf6] leading-tight"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
+          className="m3-title-large"
+          style={{ color: 'var(--md-sys-color-on-surface-dark)', fontWeight: 500 }}
         >
           {project.title}
         </h3>
 
-        {/* Description */}
+        {/* Description — M3 Body Medium */}
         <p
-          className="text-[14px] font-medium leading-[1.65] text-white flex-1"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
+          className="m3-body-medium"
+          style={{ color: 'white', lineHeight: 1.65, flex: 1 }}
         >
           {project.description}
         </p>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2">
+        {/* Tags — M3 Assist chips */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--md-spacing-2)' }}>
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.06em] text-[#8b8fa8]"
-              style={{ background: 'rgba(108,99,255,0.15)', border: '1px solid rgba(108,99,255,0.18)' }}
+              className="m3-label-small"
+              style={{
+                padding: '4px 10px',
+                borderRadius: 'var(--md-sys-shape-small)',
+                background: 'var(--md-brand-pill-bg)',
+                border: '1px solid var(--md-brand-pill-border)',
+                color: 'var(--md-sys-color-on-surface-variant)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+              }}
             >
               {tag}
             </span>
           ))}
         </div>
 
-        {/* CTA */}
+        {/* CTA — M3 Filled button */}
         <motion.button
-          className="mt-1 self-start px-7 py-3 rounded-full text-[14px] font-semibold uppercase tracking-[0.05em] text-white"
-          style={{ background: '#633484', fontFamily: 'Montserrat, sans-serif' }}
-          whileHover={{ scale: 1.05, background: '#7a3fa0' }}
+          className="m3-btn-filled m3-state-layer"
+          style={{ alignSelf: 'flex-start', marginTop: 'var(--md-spacing-1)' }}
+          whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
         >
@@ -174,52 +172,55 @@ function ProjectCard({ project, index }) {
   )
 }
 
-export default function Projects() {
+export default function Projects({ limit }) {
+  const items = limit ? projects.slice(0, limit) : projects
+
   return (
     <section
       id="projects"
-      className="py-28"
-      style={{ background: 'linear-gradient(180deg, #1b1d2c 0%, #12131e 100%)' }}
+      style={{
+        padding: 'var(--md-spacing-20) 0',
+        background: 'linear-gradient(180deg, var(--md-sys-color-surface-dark-container) 0%, var(--md-sys-color-surface-dark) 100%)',
+      }}
     >
-      <div className="max-w-[1280px] mx-auto px-12">
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 var(--md-spacing-12)' }}>
+
         {/* Section header */}
-        <div className="mb-14">
+        <div style={{ marginBottom: 'var(--md-spacing-12)' }}>
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
+            className="m3-label-large"
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4"
-            style={{ color: '#8b8fa8', fontFamily: 'Montserrat, sans-serif' }}
+            style={{ color: 'var(--md-sys-color-on-surface-variant)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 'var(--md-spacing-4)' }}
           >
             Selected Work
           </motion.p>
           <motion.h2
-            initial={{ opacity: 0, y: 24 }}
+            className="m3-display-small"
+            initial={{ opacity: 0, y: 22 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[44px] font-black tracking-tight mb-4"
-            style={{ color: '#e8eaf6', fontFamily: 'Montserrat, sans-serif' }}
+            transition={{ delay: 0.1, duration: 0.6, ease: [0.2, 0, 0, 1] }}
+            style={{ color: 'var(--md-sys-color-on-surface-dark)', fontWeight: 400, marginBottom: 'var(--md-spacing-4)' }}
           >
             Featured Projects
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            className="m3-body-large"
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-[16px] font-medium"
-            style={{ color: '#b4badb', fontFamily: 'Montserrat, sans-serif' }}
+            style={{ color: 'var(--md-sys-color-tertiary)' }}
           >
-            End-to-end design work spanning IoT, augmented reality, enterprise platforms, and large-scale gaming systems.
+            End-to-end design spanning IoT, augmented reality, enterprise platforms, and large-scale gaming.
           </motion.p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-3 gap-8">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} />
-          ))}
+        {/* M3 card grid — 3 columns */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--md-spacing-8)' }}>
+          {items.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
         </div>
       </div>
     </section>
